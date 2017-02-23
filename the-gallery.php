@@ -1,5 +1,4 @@
 <?php
-namespace TheGallery;
 
 /*
 Plugin Name: The perfect Gallery
@@ -9,11 +8,12 @@ Version: 1.0
 Author: Palasthotel ( in Person: Edward Bock)
 */
 
+namespace TheGallery;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-
 
 class Plugin {
 	
