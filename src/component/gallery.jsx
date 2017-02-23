@@ -214,7 +214,9 @@ export default class Gallery extends Component {
 		/**
 		 * on resize handler
 		 */
-		window.onresize = this.onResize.bind(this);
+		// window.onresize = this.onResize.bind(this);
+		
+		this.state_resize_interval = setInterval(this.onResize.bind(this),500);
 		
 	}
 	
@@ -337,7 +339,12 @@ export default class Gallery extends Component {
 	}
 	
 	onResize() {
-		this.updateViewportRatio();
+		
+		if(typeof this._viewport == typeof undefined ) return;
+		if(this.state.viewport_size != this._viewport.clientWidth){
+			this.updateViewportRatio();
+			this.state.viewport_size = this._viewport.clientWidth;
+		}
 	}
 	
 	onThumbClick(position) {

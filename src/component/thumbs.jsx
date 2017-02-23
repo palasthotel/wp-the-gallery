@@ -110,6 +110,8 @@ export default class Thumbs extends Component {
 			left = (item_width * active_index * -1) + (width / 2);
 		}
 		
+		if(left > 0) left = 0;
+		
 		this._stage.style.left = left + "px";
 		
 	}

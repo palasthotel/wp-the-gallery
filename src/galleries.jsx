@@ -61,8 +61,6 @@ class WPGalleries {
 	}
 }
 
-console.log("TheGalleries");
-
 /**
  * get global object
  */

@@ -19,9 +19,6 @@ export default class FullScreen extends Component {
 		};
 		Object.assign(this.props, options);
 		
-		console.log(options, this.props);
-		
-		
 		this._data = data;
 		this._events = events;
 		this.ON = this._events.EVENTS().FULLSCREEN_ON;

@@ -132,11 +132,11 @@
 		return WPGalleries;
 	}();
 	
-	console.log("TheGalleries");
-	
 	/**
 	 * get global object
 	 */
+	
+	
 	var TG = window.TheGallery;
 	TG.WPGalleries = WPGalleries;
 	TG.WPGallery = _gallery2.default;
@@ -436,7 +436,9 @@
 			/**
 	   * on resize handler
 	   */
-			window.onresize = _this.onResize.bind(_this);
+			// window.onresize = this.onResize.bind(this);
+	
+			_this.state_resize_interval = setInterval(_this.onResize.bind(_this), 500);
 	
 			return _this;
 		}
@@ -588,7 +590,12 @@
 		}, {
 			key: 'onResize',
 			value: function onResize() {
-				this.updateViewportRatio();
+	
+				if (_typeof(this._viewport) == ( true ? 'undefined' : _typeof(undefined))) return;
+				if (this.state.viewport_size != this._viewport.clientWidth) {
+					this.updateViewportRatio();
+					this.state.viewport_size = this._viewport.clientWidth;
+				}
 			}
 		}, {
 			key: 'onThumbClick',
@@ -1453,6 +1460,8 @@
 					left = item_width * active_index * -1 + width / 2;
 				}
 	
+				if (left > 0) left = 0;
+	
 				this._stage.style.left = left + "px";
 			}
 	
@@ -1559,8 +1568,6 @@
 				innerHTML: "Fullscreen"
 			};
 			Object.assign(_this.props, options);
-	
-			console.log(options, _this.props);
 	
 			_this._data = data;
 			_this._events = events;
