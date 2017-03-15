@@ -187,6 +187,8 @@ export default class Gallery extends Component {
 		if( this.props.show_fullscreen){
 			this._fullscreen = new FullScreen(this._data, this._event, this.props.fullscreen);
 			this._event.addListener(this.EVENT.FULLSCREEN_TOGGLE, this.onFullScreenToggle.bind(this));
+			this._event.addListener(this.EVENT.FULLSCREEN_OFF, this.onFullScreen.bind(this,false));
+			this._event.addListener(this.EVENT.FULLSCREEN_ON, this.onFullScreen.bind(this,true));
 		}
 		
 		if(this.props.show_share){

@@ -25,6 +25,8 @@ export default class FullScreen extends Component {
 		this.OFF = this._events.EVENTS().FULLSCREEN_OFF;
 		this.TOGGLE = this._events.EVENTS().FULLSCREEN_TOGGLE;
 		this.get().addEventListener("click", this.emit_event.bind(this));
+		
+		document.addEventListener('keyup',this.onEsc.bind(this));
 	}
 	
 	/**
@@ -35,6 +37,13 @@ export default class FullScreen extends Component {
 		this.get().className = this.props.className;
 		this.get().innerHTML = this.props.innerHTML;
 		return this.get();
+	}
+	
+	onEsc(e){
+		console.log("trigger!",e.keyCode);
+		if(e.keyCode == 27){
+			this._events.trigger(this.OFF);
+		}
 	}
 	
 	/**

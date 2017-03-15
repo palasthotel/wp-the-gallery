@@ -411,6 +411,8 @@
 			if (_this.props.show_fullscreen) {
 				_this._fullscreen = new _fullScreen2.default(_this._data, _this._event, _this.props.fullscreen);
 				_this._event.addListener(_this.EVENT.FULLSCREEN_TOGGLE, _this.onFullScreenToggle.bind(_this));
+				_this._event.addListener(_this.EVENT.FULLSCREEN_OFF, _this.onFullScreen.bind(_this, false));
+				_this._event.addListener(_this.EVENT.FULLSCREEN_ON, _this.onFullScreen.bind(_this, true));
 			}
 	
 			if (_this.props.show_share) {
@@ -1575,6 +1577,8 @@
 			_this.OFF = _this._events.EVENTS().FULLSCREEN_OFF;
 			_this.TOGGLE = _this._events.EVENTS().FULLSCREEN_TOGGLE;
 			_this.get().addEventListener("click", _this.emit_event.bind(_this));
+	
+			document.addEventListener('keyup', _this.onEsc.bind(_this));
 			return _this;
 		}
 	
@@ -1590,6 +1594,14 @@
 				this.get().className = this.props.className;
 				this.get().innerHTML = this.props.innerHTML;
 				return this.get();
+			}
+		}, {
+			key: "onEsc",
+			value: function onEsc(e) {
+				console.log("trigger!", e.keyCode);
+				if (e.keyCode == 27) {
+					this._events.trigger(this.OFF);
+				}
 			}
 	
 			/**
