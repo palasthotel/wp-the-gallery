@@ -16,7 +16,11 @@ export default class ItemImage extends PageBase {
 		img.className = "the-gallery__page-img";
 		img.title = item.getCaption();
 		
-		this.get().appendChild(img);
+		this._image_wrapper = document.createElement("div");
+		this._image_wrapper.className = "the-gallery__page-image";
+		this._image_wrapper.appendChild(img);
+		
+		this.get().appendChild(this._image_wrapper);
 		
 		if (item.getCaption() != "") {
 			this._caption = document.createElement("div");

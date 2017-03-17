@@ -245,6 +245,7 @@
 				show_thumbs: true,
 				show_fullscreen: true,
 				show_share: true,
+				auto_height: true,
 				navigation: {},
 				fullscreen: {},
 				share: {},
@@ -300,21 +301,23 @@
 				_this.onContentChange(data_item.getSource());
 			});
 	
-			_this._event.addListener(_this.EVENT.PAGE_RATIO, function (data_item) {
+			if (_this.props.auto_height) {
+				_this._event.addListener(_this.EVENT.PAGE_RATIO, function (data_item) {
 	
-				var max_height = data_item.getHeight();
-				var ratio = data_item.getRatio();
-				var changed = false;
-				if (_this.state.max_height < max_height) {
-					_this.state.max_height = max_height;
-					changed = true;
-				}
-				if (_this.state.ratio < ratio) {
-					_this.state.ratio = ratio;
-					changed = true;
-				}
-				if (changed) _this.updateViewportRatio();
-			});
+					var max_height = data_item.getHeight();
+					var ratio = data_item.getRatio();
+					var changed = false;
+					if (_this.state.max_height < max_height) {
+						_this.state.max_height = max_height;
+						changed = true;
+					}
+					if (_this.state.ratio < ratio) {
+						_this.state.ratio = ratio;
+						changed = true;
+					}
+					if (changed) _this.updateViewportRatio();
+				});
+			}
 	
 			/**
 	   * the original gallery we use for data collect
@@ -477,6 +480,7 @@
 		}, {
 			key: 'updateViewportRatio',
 			value: function updateViewportRatio() {
+				if (!this.props.auto_height) return;
 				if (this._viewport == ( true ? 'undefined' : _typeof(undefined))) return;
 	
 				var margin = 0;
@@ -495,6 +499,7 @@
 					height = max_height + margin;
 				}
 				this._viewport.style.height = height + "px";
+				this._viewport.style.overflowX = "hidden";
 			}
 		}, {
 			key: 'update',
@@ -544,7 +549,6 @@
 				var active = this.state.active;
 	
 				this._viewport.className = this.props.classes.gallery_viewport;
-				this._viewport.style.overflowX = "hidden";
 	
 				while (this._viewport.firstChild) {
 					this._viewport.removeChild(this._viewport.firstChild);
@@ -805,7 +809,11 @@
 				img.className = "the-gallery__page-img";
 				img.title = item.getCaption();
 	
-				this.get().appendChild(img);
+				this._image_wrapper = document.createElement("div");
+				this._image_wrapper.className = "the-gallery__page-image";
+				this._image_wrapper.appendChild(img);
+	
+				this.get().appendChild(this._image_wrapper);
 	
 				if (item.getCaption() != "") {
 					this._caption = document.createElement("div");
@@ -1598,7 +1606,6 @@
 		}, {
 			key: "onEsc",
 			value: function onEsc(e) {
-				console.log("trigger!", e.keyCode);
 				if (e.keyCode == 27) {
 					this._events.trigger(this.OFF);
 				}

@@ -40,7 +40,6 @@ export default class FullScreen extends Component {
 	}
 	
 	onEsc(e){
-		console.log("trigger!",e.keyCode);
 		if(e.keyCode == 27){
 			this._events.trigger(this.OFF);
 		}

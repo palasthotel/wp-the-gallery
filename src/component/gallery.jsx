@@ -39,6 +39,7 @@ export default class Gallery extends Component {
 			show_thumbs: true,
 			show_fullscreen: true,
 			show_share: true,
+			auto_height: true,
 			navigation: {},
 			fullscreen: {},
 			share:{},
@@ -95,21 +96,24 @@ export default class Gallery extends Component {
 			this.onContentChange(data_item.getSource());
 		});
 		
-		this._event.addListener(this.EVENT.PAGE_RATIO, (data_item) => {
-			
-			const max_height = data_item.getHeight();
-			const ratio = data_item.getRatio();
-			let changed = false;
-			if (this.state.max_height < max_height) {
-				this.state.max_height = max_height;
-				changed = true;
-			}
-			if (this.state.ratio < ratio) {
-				this.state.ratio = ratio;
-				changed = true;
-			}
-			if (changed) this.updateViewportRatio();
-		});
+		if(this.props.auto_height){
+			this._event.addListener(this.EVENT.PAGE_RATIO, (data_item) => {
+				
+				const max_height = data_item.getHeight();
+				const ratio = data_item.getRatio();
+				let changed = false;
+				if (this.state.max_height < max_height) {
+					this.state.max_height = max_height;
+					changed = true;
+				}
+				if (this.state.ratio < ratio) {
+					this.state.ratio = ratio;
+					changed = true;
+				}
+				if (changed) this.updateViewportRatio();
+			});
+		}
+		
 		
 		/**
 		 * the original gallery we use for data collect
@@ -244,6 +248,7 @@ export default class Gallery extends Component {
 	 * ----------------------------
 	 */
 	updateViewportRatio() {
+		if( !this.props.auto_height) return;
 		if (this._viewport == typeof undefined) return;
 		
 		let margin = 0;
@@ -259,6 +264,7 @@ export default class Gallery extends Component {
 			height = max_height + margin;
 		}
 		this._viewport.style.height = height + "px";
+		this._viewport.style.overflowX = "hidden";
 	}
 	
 	update() {
@@ -299,7 +305,6 @@ export default class Gallery extends Component {
 	renderViewport() {
 		const {active} = this.state;
 		this._viewport.className = this.props.classes.gallery_viewport;
-		this._viewport.style.overflowX = "hidden";
 		
 		while (this._viewport.firstChild) {
 			this._viewport.removeChild(this._viewport.firstChild);
